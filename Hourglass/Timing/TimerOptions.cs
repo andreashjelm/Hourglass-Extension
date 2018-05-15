@@ -124,6 +124,12 @@ namespace Hourglass.Timing
         private bool loopSound;
 
         /// <summary>
+        /// A value indicating whether all sounds in the install directory should be cycled through, to select a different sound each time a timer expires
+        /// the user.
+        /// </summary>
+        private bool cycleThroughAllSoundFiles;
+
+        /// <summary>
         /// The theme of the timer window.
         /// </summary>
         private Theme theme;
@@ -143,6 +149,7 @@ namespace Hourglass.Timing
         /// until the timer expires.
         /// </summary>
         private bool lockInterface;
+        
 
         #endregion
 
@@ -165,6 +172,7 @@ namespace Hourglass.Timing
             this.theme = Theme.DefaultTheme;
             this.sound = Sound.DefaultSound;
             this.loopSound = false;
+            this.cycleThroughAllSoundFiles = false;
             this.windowTitleMode = WindowTitleMode.ApplicationName;
             this.windowSize = new WindowSize(
                 new Rect(double.PositiveInfinity, double.PositiveInfinity, 350, 150),
@@ -474,6 +482,29 @@ namespace Hourglass.Timing
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the sound that plays when the timer expires should be looped until
+        /// stopped by the user.
+        /// </summary>
+        public bool CycleThroughAllSoundFiles
+        {
+            get
+            {
+                return this.cycleThroughAllSoundFiles;
+            }
+
+            set
+            {
+                if (this.cycleThroughAllSoundFiles == value)
+                {
+                    return;
+                }
+
+                this.cycleThroughAllSoundFiles = value;
+                this.OnPropertyChanged("CycleThroughAllSoundFiles");
+            }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating what information to display in the timer window title.
         /// </summary>
         public WindowTitleMode WindowTitleMode
@@ -591,6 +622,7 @@ namespace Hourglass.Timing
             this.theme = options.theme;
             this.sound = options.sound;
             this.loopSound = options.loopSound;
+            this.cycleThroughAllSoundFiles = options.cycleThroughAllSoundFiles;
             this.windowTitleMode = options.windowTitleMode;
             this.windowSize = WindowSize.FromWindowSize(options.WindowSize);
             this.lockInterface = options.lockInterface;
@@ -608,6 +640,7 @@ namespace Hourglass.Timing
                 "Theme",
                 "Sound",
                 "LoopSound",
+                "CycleThroughAllSoundFiles",
                 "WindowTitleMode",
                 "WindowSize",
                 "LockInterface");
@@ -678,6 +711,7 @@ namespace Hourglass.Timing
                 ThemeIdentifier = this.theme?.Identifier,
                 SoundIdentifier = this.sound?.Identifier,
                 LoopSound = this.loopSound,
+                CycleThroughAllSoundFiles = this.CycleThroughAllSoundFiles,
                 WindowTitleMode = this.windowTitleMode,
                 WindowSize = WindowSizeInfo.FromWindowSize(this.windowSize),
                 LockInterface = this.lockInterface

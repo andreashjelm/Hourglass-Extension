@@ -800,6 +800,10 @@ $</value>
     <value>_Full screen</value>
     <comment>The text for the full screen menu item, where the character following the optional underscore (_) is the access key</comment>
   </data>
+  <data name="ContextMenuCycleThroughAllSoundFilesMenuItem" xml:space="preserve">
+    <value>_Cycle Through All Sound Files</value>
+    <comment>The text for the Cycle Through All Sound Files menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
   <data name="ContextMenuLoopSoundMenuItem" xml:space="preserve">
     <value>_Loop sound</value>
     <comment>The text for the loop sound menu item, where the character following the optional underscore (_) is the access key</comment>

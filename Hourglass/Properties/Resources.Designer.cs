@@ -206,6 +206,15 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to _Cycle Through All Sound Files.
+        /// </summary>
+        internal static string ContextMenuCycleThroughAllSoundFilesMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuCycleThroughAllSoundFilesMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Dark theme.
         /// </summary>
         internal static string ContextMenuDarkThemeMenuItem {

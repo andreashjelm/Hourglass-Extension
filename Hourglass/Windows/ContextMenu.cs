@@ -62,6 +62,11 @@ namespace Hourglass.Windows
         private MenuItem showInNotificationAreaMenuItem;
 
         /// <summary>
+        /// The "Cycle Through All Sounds" <see cref="MenuItem"/>.
+        /// </summary>
+        private MenuItem cycleThroughAllSoundFilesMenuItem;
+
+        /// <summary>
         /// The "Loop timer" <see cref="MenuItem"/>.
         /// </summary>
         private MenuItem loopTimerMenuItem;
@@ -135,6 +140,11 @@ namespace Hourglass.Windows
         /// The "Sound" <see cref="MenuItem"/>s associated with <see cref="Sound"/>s.
         /// </summary>
         private IList<MenuItem> selectableSoundMenuItems;
+
+        /// <summary>
+        /// The "Cycle Through All Sound Files" <see cref="MenuItem"/>s associated with <see cref="Sound"/>s.
+        /// </summary>
+        private IList<MenuItem> cycleThroughAllSoundFiles;
 
         /// <summary>
         /// The "Loop sound" <see cref="MenuItem"/>.
@@ -273,6 +283,7 @@ namespace Hourglass.Windows
 
             this.selectableThemeMenuItems = new List<MenuItem>();
             this.selectableSoundMenuItems = new List<MenuItem>();
+            this.cycleThroughAllSoundFiles = new List<MenuItem>();
             this.selectableWindowTitleMenuItems = new List<MenuItem>();
 
             // Build the menu
@@ -357,6 +368,10 @@ namespace Hourglass.Windows
             // Show in notification area
             this.showInNotificationAreaMenuItem.IsChecked = Settings.Default.ShowInNotificationArea;
 
+            // Cycle Through All Sound Files in the Install directory
+            this.cycleThroughAllSoundFilesMenuItem.IsChecked = this.timerWindow.Options.CycleThroughAllSoundFiles;
+
+
             // Loop timer
             if (this.timerWindow.Timer.SupportsLooping)
             {
@@ -368,6 +383,7 @@ namespace Hourglass.Windows
                 this.loopTimerMenuItem.IsEnabled = false;
                 this.loopTimerMenuItem.IsChecked = false;
             }
+
 
             // Pop up when expired
             this.popUpWhenExpiredMenuItem.IsChecked = this.timerWindow.Options.PopUpWhenExpired;
@@ -411,6 +427,9 @@ namespace Hourglass.Windows
             {
                 menuItem.IsChecked = menuItem.Tag == this.timerWindow.Options.Sound;
             }
+
+            // Loop sound
+            this.loopSoundMenuItem.IsChecked = this.timerWindow.Options.CycleThroughAllSoundFiles;
 
             // Loop sound
             this.loopSoundMenuItem.IsChecked = this.timerWindow.Options.LoopSound;
@@ -475,6 +494,7 @@ namespace Hourglass.Windows
             {
                 this.timerWindow.Options.CloseWhenExpired = this.closeWhenExpiredMenuItem.IsChecked;
             }
+               
 
             // Sound
             MenuItem selectedSoundMenuItem = this.selectableSoundMenuItems.FirstOrDefault(mi => mi.IsChecked);
@@ -482,6 +502,9 @@ namespace Hourglass.Windows
 
             // Loop sound
             this.timerWindow.Options.LoopSound = this.loopSoundMenuItem.IsChecked;
+
+            // Cycle Through All Sound Files
+            this.timerWindow.Options.CycleThroughAllSoundFiles = this.cycleThroughAllSoundFilesMenuItem.IsChecked;
 
             // Do not keep computer awake
             this.timerWindow.Options.DoNotKeepComputerAwake = this.doNotKeepComputerAwakeMenuItem.IsChecked;
@@ -1246,6 +1269,16 @@ namespace Hourglass.Windows
             }
 
             this.soundMenuItem.Items.Add(this.loopSoundMenuItem);
+
+            if (this.cycleThroughAllSoundFilesMenuItem == null)
+            {
+                this.cycleThroughAllSoundFilesMenuItem = new MenuItem();
+                this.cycleThroughAllSoundFilesMenuItem.Header = Properties.Resources.ContextMenuCycleThroughAllSoundFilesMenuItem;
+                this.cycleThroughAllSoundFilesMenuItem.IsCheckable = true;
+                this.cycleThroughAllSoundFilesMenuItem.Click += this.CheckableMenuItemClick;
+            }
+
+            this.soundMenuItem.Items.Add(this.cycleThroughAllSoundFilesMenuItem);
         }
 
         /// <summary>

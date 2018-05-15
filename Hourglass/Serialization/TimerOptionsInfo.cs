@@ -92,6 +92,7 @@ namespace Hourglass.Serialization
         /// any action until the timer expires.
         /// </summary>
         public bool LockInterface { get; set; }
+        public bool CycleThroughAllSoundFiles { get; internal set; }
 
         /// <summary>
         /// Returns a <see cref="TimerOptionsInfo"/> for the specified <see cref="TimerOptions"/>.

@@ -7,9 +7,10 @@
 namespace Hourglass.Windows
 {
     using System;
+    using System.IO;
     using System.Windows.Media;
     using System.Windows.Threading;
-
+    using Hourglass.Extensions;
     using Hourglass.Timing;
 
     /// <summary>
@@ -103,7 +104,7 @@ namespace Hourglass.Windows
         /// <param name="sound">A <see cref="Sound"/>.</param>
         /// <param name="loop">A value indicating whether playback should be looped.</param>
         /// <returns><c>true</c> if the <see cref="Sound"/> plays successfully, or <c>false</c> otherwise.</returns>
-        public bool Play(Sound sound, bool loop)
+        public bool Play(Sound sound, bool loop, bool cycleThroughAllSoundFiles)
         {
             this.ThrowIfDisposed();
 
@@ -123,36 +124,48 @@ namespace Hourglass.Windows
             {
                 this.IsPlaying = true;
                 this.IsLooping = loop;
-
-                if (sound.IsBuiltIn)
+                if (!cycleThroughAllSoundFiles)
                 {
-                    // Use the sound player
-                    this.soundPlayer.Stream = sound.GetStream();
-
-                    if (loop)
+                    if (sound.IsBuiltIn)
                     {
-                        // Asynchronously play looping sound
-                        this.soundPlayer.PlayLooping();
+                        // Use the sound player
+                        this.soundPlayer.Stream = sound.GetStream();
+
+                        if (loop)
+                        {
+                            // Asynchronously play looping sound
+                            this.soundPlayer.PlayLooping();
+                        }
+                        else
+                        {
+                            // Asynchronously play sound once
+                            this.soundPlayer.Play();
+
+                            // Start a timer to notify the completion of playback if we know the duration
+                            if (sound.Duration.HasValue)
+                            {
+                                this.dispatcherTimer.Interval = sound.Duration.Value;
+                                this.dispatcherTimer.Start();
+                            }
+                        }
                     }
                     else
                     {
-                        // Asynchronously play sound once
-                        this.soundPlayer.Play();
+                        // Use the media player
 
-                        // Start a timer to notify the completion of playback if we know the duration
-                        if (sound.Duration.HasValue)
-                        {
-                            this.dispatcherTimer.Interval = sound.Duration.Value;
-                            this.dispatcherTimer.Start();
-                        }
+                        this.mediaPlayer.Open(new Uri(sound.Path));
+                        this.mediaPlayer.Play();
                     }
                 }
-                else
-                {
-                    // Use the media player
-                    this.mediaPlayer.Open(new Uri(sound.Path));
+                else {
+
+
+                    //Uri sourceFolder = new Uri(new Uri(sound.Path), ".");
+                    string directoryName = Path.GetDirectoryName(sound.Path); // path is null
+                    System.Collections.Generic.IEnumerable<string> allSoundFiles = Directory.EnumerateFiles(directoryName, "*.wav");
+                    this.mediaPlayer.Open(new Uri(allSoundFiles.PickRandom()));
                     this.mediaPlayer.Play();
-                }
+                }                
             }
             catch
             {
