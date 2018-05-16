@@ -323,6 +323,15 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to _Play Random Sound File in installation folder.
+        /// </summary>
+        internal static string ContextMenuPlayRandomSoundFileMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuPlayRandomSoundFileMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Pop up when expired.
         /// </summary>
         internal static string ContextMenuPopUpWhenExpiredMenuItem {
@@ -1714,6 +1723,15 @@ namespace Hourglass.Properties {
         internal static string TimerStartTokenUseDateTimeParserPattern {
             get {
                 return ResourceManager.GetString("TimerStartTokenUseDateTimeParserPattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 0 seconds.
+        /// </summary>
+        internal static string TimerStartZero {
+            get {
+                return ResourceManager.GetString("TimerStartZero", resourceCulture);
             }
         }
         

@@ -124,6 +124,12 @@ namespace Hourglass.Timing
         private bool loopSound;
 
         /// <summary>
+        /// A value indicating whether a random sound file in the install directory should be played, a random file will be selected each time the timer expires
+        /// the user.
+        /// </summary>
+        private bool playRandomSoundFile;
+
+        /// <summary>
         /// The theme of the timer window.
         /// </summary>
         private Theme theme;
@@ -137,6 +143,13 @@ namespace Hourglass.Timing
         /// The size, position, and state of the timer window.
         /// </summary>
         private WindowSize windowSize;
+
+        /// <summary>
+        /// A value indicating whether the user interface should be locked, preventing the user from taking any action
+        /// until the timer expires.
+        /// </summary>
+        private bool lockInterface;
+        
 
         #endregion
 
@@ -159,12 +172,14 @@ namespace Hourglass.Timing
             this.theme = Theme.DefaultTheme;
             this.sound = Sound.DefaultSound;
             this.loopSound = false;
+            this.playRandomSoundFile = false;
             this.windowTitleMode = WindowTitleMode.ApplicationName;
             this.windowSize = new WindowSize(
                 new Rect(double.PositiveInfinity, double.PositiveInfinity, 350, 150),
                 WindowState.Normal,
                 WindowState.Normal,
                 false /* isFullScreen */);
+            this.lockInterface = false;
         }
 
         /// <summary>
@@ -467,6 +482,29 @@ namespace Hourglass.Timing
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the sound that plays when the timer expires should be looped until
+        /// stopped by the user.
+        /// </summary>
+        public bool PlayRandomSoundFile
+        {
+            get
+            {
+                return this.playRandomSoundFile;
+            }
+
+            set
+            {
+                if (this.playRandomSoundFile == value)
+                {
+                    return;
+                }
+
+                this.playRandomSoundFile = value;
+                this.OnPropertyChanged("PlayRandomSoundFile");
+            }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating what information to display in the timer window title.
         /// </summary>
         public WindowTitleMode WindowTitleMode
@@ -507,6 +545,29 @@ namespace Hourglass.Timing
 
                 this.windowSize = value;
                 this.OnPropertyChanged("WindowSize");
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the user interface should be locked, preventing the user from taking
+        /// any action until the timer expires.
+        /// </summary>
+        public bool LockInterface
+        {
+            get
+            {
+                return this.lockInterface;
+            }
+
+            set
+            {
+                if (this.lockInterface == value)
+                {
+                    return;
+                }
+
+                this.lockInterface = value;
+                this.OnPropertyChanged("LockInterface");
             }
         }
 
@@ -561,8 +622,10 @@ namespace Hourglass.Timing
             this.theme = options.theme;
             this.sound = options.sound;
             this.loopSound = options.loopSound;
+            this.playRandomSoundFile = options.playRandomSoundFile;
             this.windowTitleMode = options.windowTitleMode;
             this.windowSize = WindowSize.FromWindowSize(options.WindowSize);
+            this.lockInterface = options.lockInterface;
 
             this.OnPropertyChanged(
                 "Title",
@@ -577,8 +640,10 @@ namespace Hourglass.Timing
                 "Theme",
                 "Sound",
                 "LoopSound",
+                "PlayRandomSoundFile",
                 "WindowTitleMode",
-                "WindowSize");
+                "WindowSize",
+                "LockInterface");
         }
 
         /// <summary>
@@ -606,6 +671,7 @@ namespace Hourglass.Timing
             this.loopSound = info.LoopSound;
             this.windowTitleMode = info.WindowTitleMode;
             this.windowSize = WindowSize.FromWindowSizeInfo(info.WindowSize);
+            this.lockInterface = info.LockInterface;
 
             this.OnPropertyChanged(
                 "Title",
@@ -621,7 +687,8 @@ namespace Hourglass.Timing
                 "Sound",
                 "LoopSound",
                 "WindowTitleMode",
-                "WindowSize");
+                "WindowSize",
+                "LockInterface");
         }
 
         /// <summary>
@@ -644,8 +711,10 @@ namespace Hourglass.Timing
                 ThemeIdentifier = this.theme?.Identifier,
                 SoundIdentifier = this.sound?.Identifier,
                 LoopSound = this.loopSound,
+                PlayRandomSoundFile = this.PlayRandomSoundFile,
                 WindowTitleMode = this.windowTitleMode,
-                WindowSize = WindowSizeInfo.FromWindowSize(this.windowSize)
+                WindowSize = WindowSizeInfo.FromWindowSize(this.windowSize),
+                LockInterface = this.lockInterface
             };
         }
 

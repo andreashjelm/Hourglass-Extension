@@ -92,6 +92,7 @@
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\DayOfWeekExtensions.cs" />
     <Compile Include="Extensions\DependencyObjectExtensions.cs" />
+    <Compile Include="Extensions\EnumerableExtension.cs" />
     <Compile Include="Extensions\EnvironmentExtensions.cs" />
     <Compile Include="Extensions\FrameworkElementExtensions.cs" />
     <Compile Include="Extensions\IRestorableWindow.cs" />

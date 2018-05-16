@@ -62,6 +62,11 @@ namespace Hourglass.Windows
         private MenuItem showInNotificationAreaMenuItem;
 
         /// <summary>
+        /// The "Play Random Sound File" <see cref="MenuItem"/>.
+        /// </summary>
+        private MenuItem playRandomSoundFileMenuItem;
+
+        /// <summary>
         /// The "Loop timer" <see cref="MenuItem"/>.
         /// </summary>
         private MenuItem loopTimerMenuItem;
@@ -135,6 +140,11 @@ namespace Hourglass.Windows
         /// The "Sound" <see cref="MenuItem"/>s associated with <see cref="Sound"/>s.
         /// </summary>
         private IList<MenuItem> selectableSoundMenuItems;
+
+        /// <summary>
+        /// The "Play Random Sound File" <see cref="MenuItem"/>s associated with <see cref="Sound"/>s.
+        /// </summary>
+        private IList<MenuItem> playRandomSoundFile;
 
         /// <summary>
         /// The "Loop sound" <see cref="MenuItem"/>.
@@ -273,6 +283,7 @@ namespace Hourglass.Windows
 
             this.selectableThemeMenuItems = new List<MenuItem>();
             this.selectableSoundMenuItems = new List<MenuItem>();
+            this.playRandomSoundFile = new List<MenuItem>();
             this.selectableWindowTitleMenuItems = new List<MenuItem>();
 
             // Build the menu
@@ -290,6 +301,13 @@ namespace Hourglass.Windows
         /// <param name="e">The event data.</param>
         private void WindowContextMenuOpening(object sender, ContextMenuEventArgs e)
         {
+            // Do not show the context menu if the user interface is locked
+            if (this.timerWindow.Options.LockInterface)
+            {
+                e.Handled = true;
+                return;
+            }
+
             // Update dynamic items
             this.UpdateRecentInputsMenuItem();
             this.UpdateSavedTimersMenuItem();
@@ -350,6 +368,10 @@ namespace Hourglass.Windows
             // Show in notification area
             this.showInNotificationAreaMenuItem.IsChecked = Settings.Default.ShowInNotificationArea;
 
+            // Play Random Sound File in the Install directory
+            this.playRandomSoundFileMenuItem.IsChecked = this.timerWindow.Options.PlayRandomSoundFile;
+
+
             // Loop timer
             if (this.timerWindow.Timer.SupportsLooping)
             {
@@ -361,6 +383,7 @@ namespace Hourglass.Windows
                 this.loopTimerMenuItem.IsEnabled = false;
                 this.loopTimerMenuItem.IsChecked = false;
             }
+
 
             // Pop up when expired
             this.popUpWhenExpiredMenuItem.IsChecked = this.timerWindow.Options.PopUpWhenExpired;
@@ -404,6 +427,9 @@ namespace Hourglass.Windows
             {
                 menuItem.IsChecked = menuItem.Tag == this.timerWindow.Options.Sound;
             }
+
+            // Loop sound
+            this.loopSoundMenuItem.IsChecked = this.timerWindow.Options.PlayRandomSoundFile;
 
             // Loop sound
             this.loopSoundMenuItem.IsChecked = this.timerWindow.Options.LoopSound;
@@ -468,6 +494,7 @@ namespace Hourglass.Windows
             {
                 this.timerWindow.Options.CloseWhenExpired = this.closeWhenExpiredMenuItem.IsChecked;
             }
+               
 
             // Sound
             MenuItem selectedSoundMenuItem = this.selectableSoundMenuItems.FirstOrDefault(mi => mi.IsChecked);
@@ -475,6 +502,9 @@ namespace Hourglass.Windows
 
             // Loop sound
             this.timerWindow.Options.LoopSound = this.loopSoundMenuItem.IsChecked;
+
+            // Play Random Sound File
+            this.timerWindow.Options.PlayRandomSoundFile = this.playRandomSoundFileMenuItem.IsChecked;
 
             // Do not keep computer awake
             this.timerWindow.Options.DoNotKeepComputerAwake = this.doNotKeepComputerAwakeMenuItem.IsChecked;
@@ -1239,6 +1269,19 @@ namespace Hourglass.Windows
             }
 
             this.soundMenuItem.Items.Add(this.loopSoundMenuItem);
+
+            if (this.playRandomSoundFileMenuItem == null)
+            {
+                this.playRandomSoundFileMenuItem = new MenuItem();
+                this.playRandomSoundFileMenuItem.Header = Properties.Resources.ContextMenuPlayRandomSoundFileMenuItem;
+                this.playRandomSoundFileMenuItem.IsCheckable = true;
+                this.playRandomSoundFileMenuItem.Click += this.CheckableMenuItemClick;
+                if(SoundManager.Instance.UserProvidedSounds.Count == 0)
+                {                    
+                    this.playRandomSoundFileMenuItem.IsEnabled = false;
+                }
+            }
+            this.soundMenuItem.Items.Add(this.playRandomSoundFileMenuItem);
         }
 
         /// <summary>
