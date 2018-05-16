@@ -124,10 +124,10 @@ namespace Hourglass.Timing
         private bool loopSound;
 
         /// <summary>
-        /// A value indicating whether all sounds in the install directory should be cycled through, to select a different sound each time a timer expires
+        /// A value indicating whether a random sound file in the install directory should be played, a random file will be selected each time the timer expires
         /// the user.
         /// </summary>
-        private bool cycleThroughAllSoundFiles;
+        private bool playRandomSoundFile;
 
         /// <summary>
         /// The theme of the timer window.
@@ -172,7 +172,7 @@ namespace Hourglass.Timing
             this.theme = Theme.DefaultTheme;
             this.sound = Sound.DefaultSound;
             this.loopSound = false;
-            this.cycleThroughAllSoundFiles = false;
+            this.playRandomSoundFile = false;
             this.windowTitleMode = WindowTitleMode.ApplicationName;
             this.windowSize = new WindowSize(
                 new Rect(double.PositiveInfinity, double.PositiveInfinity, 350, 150),
@@ -485,22 +485,22 @@ namespace Hourglass.Timing
         /// Gets or sets a value indicating whether the sound that plays when the timer expires should be looped until
         /// stopped by the user.
         /// </summary>
-        public bool CycleThroughAllSoundFiles
+        public bool PlayRandomSoundFile
         {
             get
             {
-                return this.cycleThroughAllSoundFiles;
+                return this.playRandomSoundFile;
             }
 
             set
             {
-                if (this.cycleThroughAllSoundFiles == value)
+                if (this.playRandomSoundFile == value)
                 {
                     return;
                 }
 
-                this.cycleThroughAllSoundFiles = value;
-                this.OnPropertyChanged("CycleThroughAllSoundFiles");
+                this.playRandomSoundFile = value;
+                this.OnPropertyChanged("PlayRandomSoundFile");
             }
         }
 
@@ -622,7 +622,7 @@ namespace Hourglass.Timing
             this.theme = options.theme;
             this.sound = options.sound;
             this.loopSound = options.loopSound;
-            this.cycleThroughAllSoundFiles = options.cycleThroughAllSoundFiles;
+            this.playRandomSoundFile = options.playRandomSoundFile;
             this.windowTitleMode = options.windowTitleMode;
             this.windowSize = WindowSize.FromWindowSize(options.WindowSize);
             this.lockInterface = options.lockInterface;
@@ -640,7 +640,7 @@ namespace Hourglass.Timing
                 "Theme",
                 "Sound",
                 "LoopSound",
-                "CycleThroughAllSoundFiles",
+                "PlayRandomSoundFile",
                 "WindowTitleMode",
                 "WindowSize",
                 "LockInterface");
@@ -711,7 +711,7 @@ namespace Hourglass.Timing
                 ThemeIdentifier = this.theme?.Identifier,
                 SoundIdentifier = this.sound?.Identifier,
                 LoopSound = this.loopSound,
-                CycleThroughAllSoundFiles = this.CycleThroughAllSoundFiles,
+                PlayRandomSoundFile = this.PlayRandomSoundFile,
                 WindowTitleMode = this.windowTitleMode,
                 WindowSize = WindowSizeInfo.FromWindowSize(this.windowSize),
                 LockInterface = this.lockInterface

@@ -125,43 +125,14 @@ namespace Hourglass.Windows
             {
                 this.IsPlaying = true;
                 this.IsLooping = options.LoopSound;
-                if (!options.CycleThroughAllSoundFiles)
+                if (!options.PlayRandomSoundFile)
                 {
-                    if (options.Sound.IsBuiltIn)
-                    {
-                        // Use the sound player
-                        this.soundPlayer.Stream = options.Sound.GetStream();
-
-                        if (options.LoopSound)
-                        {
-                            // Asynchronously play looping sound
-                            this.soundPlayer.PlayLooping();
-                        }
-                        else
-                        {
-                            // Asynchronously play sound once
-                            this.soundPlayer.Play();
-
-                            // Start a timer to notify the completion of playback if we know the duration
-                            if (options.Sound.Duration.HasValue)
-                            {
-                                this.dispatcherTimer.Interval = options.Sound.Duration.Value;
-                                this.dispatcherTimer.Start();
-                            }
-                        }
-                    }
-                    else
-                    {
-                        // Use the media player
-                        this.mediaPlayer.Open(new Uri(options.Sound.Path));
-                        this.mediaPlayer.Play();
-                    }
+                    playSelectedSound(options);
                 }
-                else {                                   
-                    Sound randomSound = SoundManager.Instance.UserProvidedSounds.PickRandom();
-                    this.mediaPlayer.Open(new Uri(randomSound.Path));
-                    this.mediaPlayer.Play();
-                }                
+                else
+                {
+                    playRandomSound();
+                }
             }
             catch
             {
@@ -171,6 +142,46 @@ namespace Hourglass.Windows
             // Raise an event
             this.OnPlaybackStarted();
             return true;
+        }
+
+        private void playSelectedSound(TimerOptions options)
+        {
+            if (options.Sound.IsBuiltIn)
+            {
+                // Use the sound player
+                this.soundPlayer.Stream = options.Sound.GetStream();
+
+                if (options.LoopSound)
+                {
+                    // Asynchronously play looping sound
+                    this.soundPlayer.PlayLooping();
+                }
+                else
+                {
+                    // Asynchronously play sound once
+                    this.soundPlayer.Play();
+
+                    // Start a timer to notify the completion of playback if we know the duration
+                    if (options.Sound.Duration.HasValue)
+                    {
+                        this.dispatcherTimer.Interval = options.Sound.Duration.Value;
+                        this.dispatcherTimer.Start();
+                    }
+                }
+            }
+            else
+            {
+                // Use the media player
+                this.mediaPlayer.Open(new Uri(options.Sound.Path));
+                this.mediaPlayer.Play();
+            }
+        }
+
+        private void playRandomSound()
+        {
+            Sound randomSound = SoundManager.Instance.UserProvidedSounds.PickRandom();
+            this.mediaPlayer.Open(new Uri(randomSound.Path));
+            this.mediaPlayer.Play();
         }
 
         /// <summary>

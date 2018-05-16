@@ -206,15 +206,6 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to _Cycle Through All Sound Files.
-        /// </summary>
-        internal static string ContextMenuCycleThroughAllSoundFilesMenuItem {
-            get {
-                return ResourceManager.GetString("ContextMenuCycleThroughAllSoundFilesMenuItem", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to _Dark theme.
         /// </summary>
         internal static string ContextMenuDarkThemeMenuItem {
@@ -328,6 +319,15 @@ namespace Hourglass.Properties {
         internal static string ContextMenuOpenSavedTimersOnStartupMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuOpenSavedTimersOnStartupMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Play Random Sound File in installation folder.
+        /// </summary>
+        internal static string ContextMenuPlayRandomSoundFileMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuPlayRandomSoundFileMenuItem", resourceCulture);
             }
         }
         
