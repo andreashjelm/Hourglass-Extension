@@ -800,6 +800,10 @@ $</value>
     <value>_Full screen</value>
     <comment>The text for the full screen menu item, where the character following the optional underscore (_) is the access key</comment>
   </data>
+  <data name="ContextMenuPlayRandomSoundFileMenuItem" xml:space="preserve">
+    <value>_Play Random Sound File in installation folder</value>
+    <comment>The text for the Play Random Sound File menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
   <data name="ContextMenuLoopSoundMenuItem" xml:space="preserve">
     <value>_Loop sound</value>
     <comment>The text for the loop sound menu item, where the character following the optional underscore (_) is the access key</comment>
@@ -1228,5 +1232,9 @@ $</value>
   <data name="TimerWindowTitleSeparator" xml:space="preserve">
     <value> · </value>
     <comment>The separator for parts of the window title for the timer window</comment>
+  </data>
+  <data name="TimerStartZero" xml:space="preserve">
+    <value>0 seconds</value>
+    <comment>The zero-length value for a timer</comment>
   </data>
 </root>
