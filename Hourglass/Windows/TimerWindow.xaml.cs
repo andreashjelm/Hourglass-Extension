@@ -820,7 +820,7 @@ namespace Hourglass.Windows
         /// </summary>
         private void BeginExpirationSound()
         {
-            this.soundPlayer.Play(this.Options.Sound, this.Options.LoopSound, this.Options.CycleThroughAllSoundFiles);
+            this.soundPlayer.Play(this.Options);
         }
 
         /// <summary>
